@@ -4,44 +4,43 @@
 
 static char buffer[2048];
 
-char* readline(char* prompt) {
+char *readline(char *prompt) {
   fputs(prompt, stdout);
   fgets(buffer, 2048, stdin);
-  char* cpy = malloc(strlen(buffer)+1);
+  char *cpy = malloc(strlen(buffer) + 1);
   strcpy(cpy, buffer);
-  cpy[strlen(cpy)-1] = '\0';
+  cpy[strlen(cpy) - 1] = '\0';
   return cpy;
 }
 
-void add_history(char* unused) {}
+void add_history(char *unused) {}
 
 #else
-#include <editline/readline.h>
-#include <editline/history.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 #endif
-#include "mpc.h"
 #include "eval.h"
 
-int main(int argc, char** argv) {
-  mpc_parser_t* Number = mpc_new("number");
-  mpc_parser_t* Operator = mpc_new("operator");
-  mpc_parser_t* Expr = mpc_new("expr");
-  mpc_parser_t* PaperLang = mpc_new("paprlang");
+int main(int argc, char **argv) {
+  mpc_parser_t *Number = mpc_new("number");
+  mpc_parser_t *Operator = mpc_new("operator");
+  mpc_parser_t *Expr = mpc_new("expr");
+  mpc_parser_t *PaperLang = mpc_new("paprlang");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-    "                                                     \
+            "                                                     \
      number   : /-?[0-9]+/ ;                              \
      operator : '+' | '-' | '*' | '/' ;                   \
      expr     : <number> | '(' <operator> <expr>+ ')' ;   \
      paprlang    : /^/ <operator> <expr>+ /$/ ;              \
     ",
-    Number, Operator, Expr, PaperLang);
+            Number, Operator, Expr, PaperLang);
 
   puts("SLang version 0.0.1");
   puts("Press CTRL+C to Exit");
 
   while (1) {
-    char* input = readline("paprlang> ");
+    char *input = readline("paprlang> ");
     add_history(input);
 
     mpc_result_t r;
