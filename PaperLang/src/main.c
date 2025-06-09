@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     ",
             Number, Operator, Expr, PaperLang);
 
-  puts("SLang version 0.0.1");
+  puts("PaperLang version 0.0.1");
   puts("Press CTRL+C to Exit");
 
   while (1) {
