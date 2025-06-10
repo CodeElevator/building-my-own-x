@@ -25,20 +25,22 @@ int main(int argc, char **argv) {
   mpc_parser_t *Number = mpc_new("number");
   mpc_parser_t *Symbol = mpc_new("symbol");
   mpc_parser_t *Sexpr = mpc_new("sexpr");
+  mpc_parser_t *Qexpr = mpc_new("qexpr");
   mpc_parser_t *Expr = mpc_new("expr");
   mpc_parser_t *PaperLang = mpc_new("paprlang");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-            "                                                     \
-     number   : /-?[0-9]+/ ;                              \
-     symbol : '+' | '-' | '*' | '/' ;                   \
-     sexpr  : '(' <expr>* ')' ;               \
-     expr   : <number> | <symbol> | <sexpr> ; \
-     paprlang  : /^/ <expr>* /$/ ;               \
-    ",
-            Number, Symbol, Sexpr, Expr, PaperLang);
-
-  puts("PaperLang version 0.0.2");
+            "                                                    \
+    number : /-?[0-9]+/ ;                              \
+    symbol : \"list\" | \"head\" | \"tail\"                \
+           | \"join\" | \"eval\" | '+' | '-' | '*' | '/' ; \
+    sexpr  : '(' <expr>* ')' ;                         \
+    qexpr  : '{' <expr>* '}' ;                         \
+    expr   : <number> | <symbol> | <sexpr> | <qexpr> ; \
+    paprlang  : /^/ <expr>* /$/ ;                         \
+  ",
+            Number, Symbol, Sexpr, Qexpr, Expr, PaperLang);
+  puts("PaperLang version 0.0.3");
   puts("Press CTRL+C to Exit");
 
   while (1) {
@@ -58,6 +60,6 @@ int main(int argc, char **argv) {
     free(input);
   }
 
-  mpc_cleanup(5, Number, Symbol, Sexpr, Expr, PaperLang);
+  mpc_cleanup(6, Number, Symbol, Sexpr, Qexpr, Expr, PaperLang);
   return 0;
 }
