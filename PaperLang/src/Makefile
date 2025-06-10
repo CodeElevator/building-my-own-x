@@ -7,7 +7,7 @@ SRC = main.c eval.c library/mpc.c
 OBJ = $(SRC:.c=.o)
 
 # Target binary
-TARGET = slang
+TARGET = paprlang
 
 # Detect platform
 ifeq ($(OS),Windows_NT)
